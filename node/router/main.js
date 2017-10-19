@@ -90,11 +90,12 @@ module.exports = function(app, socket)
 		var c = req.body.customer;
 
 		// User ID variable
-		var uID = user.id;
+		//var uID = user.id;
 
 		// Create a new customer
 		user.create(req.body.user).then(function(user){
 			
+			console.log("user ID: ", user.id);
 			c.userId = user.id;
 			customer.create(c).then(function(customer) {
 				mealRequirement.findAll({
@@ -165,6 +166,10 @@ module.exports = function(app, socket)
 					res.render('main.ejs', {page:"addCustomer", mrcats:mrcats, customer:customers[0], user:customers[0].user});
 				});
 			});
+	});
+	
+		app.get('/deleteCustomer/:customerID', function (req, res){
+		console.log ('GET /addCustomers');
 	});
 
 	app.get('/mealOptions', /* ensureLogin.ensureLoggedIn(),*/ function (req, res){
