@@ -50,7 +50,7 @@
 	{ 
 		// page is now ready, initialize the calendar...
 		
-		if(<%= sunny %>)
+		if(<%= authUser %>)
 			$('#calendar').fullCalendar(calendar);
 		
 	});

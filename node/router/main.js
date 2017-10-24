@@ -64,7 +64,7 @@ module.exports = function(app, socket)
 				// Render the page and pass variables from today, the previous findall statement, and the one before
 				
 				res.render('main.ejs', 
-				{page: "index", today: today, customerDays: customerDays, allCustomerDays: allCustomerDays, sunny: req.isAuthenticated()}
+				{page: "index", today: today, customerDays: customerDays, allCustomerDays: allCustomerDays, authUser: req.isAuthenticated()}
 				);
 			});
 		});
@@ -78,7 +78,7 @@ module.exports = function(app, socket)
 			.then(function(customers) {
 
 				// Render the viewCustomers page, passing through all the customers
-				res.render('main.ejs', {page:"viewCustomers", customers:customers});
+				res.render('main.ejs', {page:"viewCustomers", customers:customers, authUser: req.isAuthenticated()});
 			});
 	});
 	
@@ -94,7 +94,6 @@ module.exports = function(app, socket)
 
 		// Create a new customer
 		user.create(req.body.user).then(function(user){
-			
 			c.userId = user.id;
 			customer.create(c).then(function(customer) {
 				mealRequirement.findAll({
@@ -146,7 +145,7 @@ module.exports = function(app, socket)
 		mealRequirementCategory.findAll({include:[mealRequirement]})
 			.then(function(mrcats){ // short for meal requirement category
 				// Render the addCustomer page, passing through all meal requirements, an empty customer object, and an empty user object
-				res.render('main.ejs', {page:"addCustomer", mrcats:mrcats, customer:{}, user:{}});
+				res.render('main.ejs', {page:"addCustomer", mrcats:mrcats, customer:{}, user:{}, authUser: req.isAuthenticated()});
 			});
 	});
 
@@ -162,7 +161,7 @@ module.exports = function(app, socket)
 					},
 					include:[mealRequirement, user]
 				}).then(function(customers){
-					res.render('main.ejs', {page:"addCustomer", mrcats:mrcats, customer:customers[0], user:customers[0].user});
+					res.render('main.ejs', {page:"addCustomer", mrcats:mrcats, customer:customers[0], user:customers[0].user, authUser: req.isAuthenticated()});
 				});
 			});
 	});
@@ -171,7 +170,7 @@ module.exports = function(app, socket)
 		console.log ('GET /mealOptions');
 		mealRequirementCategory.findAll({include:[mealRequirement]})
 		.then(function(mrcats){
-			res.render('main.ejs', {page:"mealOptions", mrcats:mrcats});
+			res.render('main.ejs', {page:"mealOptions", mrcats:mrcats, authUser: req.isAuthenticated()});
 		});
 	});
 
@@ -207,13 +206,13 @@ module.exports = function(app, socket)
 	
 	app.get('/addDriver',  ensureLogin.ensureLoggedIn(),  function(req,res){
 		console.log('GET /addDriver')
-		res.render('main.ejs', {page:"addDriver", driver:{}});
+		res.render('main.ejs', {page:"addDriver", driver:{}, authUser: req.isAuthenticated()});
 	});
 	
 	app.get("/maps", function(req,res){
 	customer.findAll({include:[user]})
 	.then(function(customers){
-		res.render('main.ejs', {page:"maps", customers:customers});
+		res.render('main.ejs', {page:"maps", customers:customers, authUser: req.isAuthenticated()});
 		});
 	});
 	
@@ -227,7 +226,7 @@ module.exports = function(app, socket)
 	
 	app.get('/addDriver', function (req, res){
 		console.log ('GET /addDriver');
-		res.render('main.ejs', {page:"addDriver", driver:{}});
+		res.render('main.ejs', {page:"addDriver", driver:{}, authUser: req.isAuthenticated()});
 	});
 	
 	app.post('/addDriver', function (req, res){
@@ -258,7 +257,7 @@ module.exports = function(app, socket)
 		.then(function(customers){
 			driver.findAll({include:[user]})
 				.then(function(drivers){
-					res.render('main.ejs', {page:"dropdownList",customers:customers,drivers:drivers });
+					res.render('main.ejs', {page:"dropdownList",customers:customers,drivers:drivers, authUser: req.isAuthenticated()});
 				})
 		})
 	 });
@@ -309,8 +308,9 @@ module.exports = function(app, socket)
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/home', function(req, res) {
-		res.render('index.ejs'); // load the index.ejs file
+		res.render('index.ejs', {authUser: req.isAuthenticated()}); // load the index.ejs file
 	});
+				
 
 	//=====================================
 	//LOGIN ===============================
@@ -319,7 +319,7 @@ module.exports = function(app, socket)
 	app.get('/login', function(req, res) {
 
 		// render the page and pass in any flash data if it exists
-		res.render('login.ejs', { message: req.flash('loginMessage') });
+		res.render('login.ejs', { message: req.flash('loginMessage'), authUser: req.isAuthenticated() });
 	});
 
 	// // process the login form
@@ -355,7 +355,7 @@ module.exports = function(app, socket)
 	// we will use route middleware to verify
 	app.get('/profile', ensureLogin.ensureLoggedIn(), function(req, res) {
 		res.render('profile.ejs', {
-			user : req.user // get the user out of session and pass to template
+			user : req.user, authUser: req.isAuthenticated() // get the user out of session and pass to template
 		});
 	});
 
