@@ -70,7 +70,7 @@ module.exports = function(app, socket)
 		});
 	});
 	
-	app.get('/viewCustomers', ensureLogin.ensureLoggedIn(), function (req, res){
+	app.get('/viewCustomers', /*ensureLogin.ensureLoggedIn(),*/ function (req, res){
 		console.log ('GET /viewCustomers');		
 
 		// Find all the customers, include the mealRequirement and user tables
@@ -90,10 +90,15 @@ module.exports = function(app, socket)
 		var c = req.body.customer;
 
 		// User ID variable
-		var uID = user.id;
+		//var uID = user.id;
 
 		// Create a new customer
 		user.create(req.body.user).then(function(user){
+<<<<<<< HEAD
+=======
+			
+			console.log("user ID: ", user.id);
+>>>>>>> 4297907291e0903ea4f346c328d0be35ca9f1354
 			c.userId = user.id;
 			customer.create(c).then(function(customer) {
 				mealRequirement.findAll({
@@ -138,7 +143,7 @@ module.exports = function(app, socket)
 	});		// end app.get callback
 		
 
-	app.get('/addCustomer', ensureLogin.ensureLoggedIn(), function (req, res){
+	app.get('/addCustomer', /*ensureLogin.ensureLoggedIn(),*/ function (req, res){
 		console.log ('GET /addCustomer');
 
 		// Find all the meal requirement categories with the mealrequirement foreign key
@@ -165,8 +170,12 @@ module.exports = function(app, socket)
 				});
 			});
 	});
+	
+		app.get('/deleteCustomer/:customerID', function (req, res){
+		console.log ('GET /addCustomers');
+	});
 
-	app.get('/mealOptions', ensureLogin.ensureLoggedIn(), function (req, res){
+	app.get('/mealOptions', /* ensureLogin.ensureLoggedIn(),*/ function (req, res){
 		console.log ('GET /mealOptions');
 		mealRequirementCategory.findAll({include:[mealRequirement]})
 		.then(function(mrcats){
