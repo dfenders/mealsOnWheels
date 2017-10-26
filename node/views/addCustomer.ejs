@@ -123,91 +123,42 @@
 
 //---------------------------------------------------------------
 
- /*<% field = [{fieldId:"firstName",fieldName: "First name"},{fieldId:"lastName",fieldName: "Last name"}];%>
-                        <% include partials/customerInputAddUser.ejs %> */
-                        /*
-Add a customer
-- customer object
-
-var customer = {};
-
-- button that adds a customer
-  - javascript click function
-  
-  
-  */
   
 //function to get the customer data from the fields
   function getCustomer()
   {
   console.log("in getCustomer");
   //get the data from the fields and store them into variables
-		var customerNum = $('#customerNumber');
-		var firstName = $('#firstName'); 
-		var lastName = $('#lastName');
-		var userName = $('#userName');
-		var password = $('#password');
-		var address = $('#address');
-		var email = $('#email');
-		var phoneNum = $('#phoneNumber');	
+		var customerNum = $('#customerNumber').val();
+		var firstName = $('#firstName').val();
+		var lastName = $('#lastName').val();
+		var userName = $('#userName').val();
+		var password = $('#password').val();
+		var address = $('#address').val();
+		var email = $('#email').val();
+		var phoneNum = $('#phoneNumber').val();	
 
 	//take the variables above and store them in an array
     //object customerObject has a customer number, first name, last name etc. 
-		var customerObject = {customerNumber:customerNum, firstName:firstName, lastName:lastName, userName:userName, password:password, address:address, email:email, phoneNum:phoneNum};
+		var customerObject = {customerNumber:customerNum, address:address, };
+        var userObject = {firstName:firstName, lastName:lastName, userName:userName, password:password, email:email, phone:phoneNum}
     //print out the entire object to make sure that all the values are correct before adding to the db
     console.log(customerObject);
 	//pass the customer array to the save function to input into the database 
-	saveCustomer(cust_Array);
+	saveCustomer(customerObject, userObject);
   }
  
   //function to put the data into the database
-  function saveCustomer(array)
+  function saveCustomer(customer_object, user_object)
   {
 	//save the customer into the databsae, so save the firleds as an array or input them individually?
 	//input an array of object(?) to the db containing all the data from the user?
-	//var customer_instance = yield customer.build({
-	consol.log($array);	
+    $.post( "/addCustomers", {customer:customer_object, user:user_object}, function( custromer_data){
+        console.log("data sent")
+    })
+    
+    //console.log(array);	
 	
   }
 
-//---------------------------------------------------------------
-
-
-    angular.module('AddCustomer', []).controller('CustomerCtrl', ['$scope', '$http', function ($scope, $http) {
-        $scope.saveCustomer = {};
-        $scope.mealRequirements = {};
-        $scope.customerRequirements = [];
-        $scope.customerDay = {};
-		$scope.saveUser ={};
-
-        $scope.findRequirement = function(customer, mealr){
-            var found = false;
-            if(customer.mealRequirements)
-                for(var i=0;i<customer.mealRequirements.length;i++) {
-                    if (customer.mealRequirements[i].id == mealr.id) {
-                        found = true;
-                        break;
-                    }
-                }
-            return found;
-        };
-		
-
-        $scope.addCustomer = function () {
-            console.log($scope.customerDay);
-            $scope.customerRequirements = [];
-            angular.forEach($scope.mealRequirements, function(key,value){
-                 if(key)
-                    $scope.customerRequirements.push(value);
-            });
-
-            $http.post('/addCustomers', {
-                "customer": $scope.saveCustomer,
-                "mealRequirements":$scope.customerRequirements,
-                "customerDay" : $scope.customerDay,
-				"user":$scope.saveUser
-			},
-            function (response) { $scope.results = response; },
-            function (failure) { console.log("failed : ", failure ); });
-        }
-    }]);
+</script>
