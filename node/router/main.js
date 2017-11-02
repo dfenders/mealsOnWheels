@@ -86,6 +86,7 @@ module.exports = function(app, socket)
 		console.log(req.body);
 		console.log ('POST /addCustomers');
 
+
 		// customer variable from the post request
 		var c = req.body.customer;
 
@@ -137,10 +138,23 @@ module.exports = function(app, socket)
 		}); // end user.create.then
 	});		// end app.get callback
 		
+app.post('/editCustomers', function (req, res){
+		console.log(req.body);
+		console.log ('POST /editCustomers');
+
+		// customer variable from the post request
+		var c = req.body.customer;
+
+		console.log(c);
+		// User ID variable
+		var uID = user.id;
+
+	});		// end app.get callback
+
 
 	app.get('/addCustomer', ensureLogin.ensureLoggedIn(), function (req, res){
 		console.log ('GET /addCustomer');
-
+		console.log("in main, addCustomer");
 		// Find all the meal requirement categories with the mealrequirement foreign key
 		mealRequirementCategory.findAll({include:[mealRequirement]})
 			.then(function(mrcats){ // short for meal requirement category
@@ -165,6 +179,7 @@ module.exports = function(app, socket)
 				});
 			});
 	});
+
 
 	app.get('/mealOptions', ensureLogin.ensureLoggedIn(), function (req, res){
 		console.log ('GET /mealOptions');

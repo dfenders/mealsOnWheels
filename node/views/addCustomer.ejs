@@ -114,6 +114,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="customer" value="<%- customer["id"] %>"/>
     <div style="position:fixed;top:0;right:0;padding:10px;">
         <input type="button" value="Save" class="btn btn-primary" onclick="getCustomer()"/>
     </div>
@@ -127,7 +128,9 @@
 //function to get the customer data from the fields
   function getCustomer()
   {
-  console.log("in getCustomer");
+      //
+      var customerID = $('input[name=customer]').val();
+  console.log("in getCustomer", customerID);
   //get the data from the fields and store them into variables
 		var customerNum = $('#customerNumber').val();
 		var firstName = $('#firstName').val();
@@ -145,15 +148,32 @@
     //print out the entire object to make sure that all the values are correct before adding to the db
     console.log(customerObject);
 	//pass the customer array to the save function to input into the database 
-	saveCustomer(customerObject, userObject);
+    if(customerID)
+    {
+        customerObject['id'] = customerID;
+        editCustomer(customerObject, userObject);
+    }
+    else 
+        addCustomer(customerObject, userObject);
+
   }
  
   //function to put the data into the database
-  function saveCustomer(customer_object, user_object)
+  function addCustomer(customer_object, user_object)
   {
 	//save the customer into the databsae, so save the firleds as an array or input them individually?
 	//input an array of object(?) to the db containing all the data from the user?
-    $.post( "/addCustomers", {customer:customer_object, user:user_object}, function( custromer_data){
+    $.post( "/addCustomers", {customer:customer_object, user:user_object}, function( customer_data){
+        console.log("data sent")
+    })
+    
+    //console.log(array);	
+	
+  }
+    function editCustomer(customer_object, user_object)
+  {
+
+    $.post( "/editCustomers", {customer:customer_object, user:user_object}, function( customer_data){
         console.log("data sent")
     })
     
