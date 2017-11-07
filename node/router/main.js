@@ -1,5 +1,3 @@
-// routes/main.js
-
 /*var orm 	   =  	require('../orm.js');
 var Sequelize  =    require('sequelize');
 var customer = Sequelize.define('customer',orm.Customer);*/
@@ -151,6 +149,10 @@ module.exports = function(app, socket)
 
 
 	app.get('/editCustomer/:customerID', function (req, res){
+	
+	
+	
+	
 		console.log ('GET /addCustomers');
 		var customerID = req.params.customerID;
 		mealRequirementCategory.findAll({include:[mealRequirement]})
@@ -165,6 +167,39 @@ module.exports = function(app, socket)
 				});
 			});
 	});
+
+	
+	
+	
+	
+	
+	/*app.get('/deleteCustomer/:customerID', function (req, res){
+		
+		var customerID = req.params.customerID;
+		
+				customer.destroy({
+					where:{
+						id:customerID
+					},
+					include:[mealRequirement, user]
+				}).then(function(customers){
+					//res.render('viewCustomers.ejs');
+				});
+		
+	});*/
+
+
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
 
 	app.get('/mealOptions', ensureLogin.ensureLoggedIn(), function (req, res){
 		console.log ('GET /mealOptions');
