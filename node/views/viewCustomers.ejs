@@ -1,12 +1,24 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+	<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+
 <h2 class="mt-2">View customers</h2>
 
 <div class="row">
-    
-	    <% include partials/customerList.ejs %>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+    <div class="col-md-12">
+		<% include partials/customerList.ejs %>
+	</div>
+
+	    
+	
+		
 		<script>	
+		$(document).ready(function() {
+  		  $('#CustomerTable').DataTable();
+		});
+
 var socket = io.connect("localhost:3000");
-	<!-- get the customer from main within router and log it into the page -->
+	//<!-- get the customer from main within router and log it into the page -->
 	socket.on('get_Customer', function(customer)
 
 	{

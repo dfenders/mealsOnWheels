@@ -154,6 +154,7 @@ module.exports = function(app, socket)
 	
 	
 		console.log ('GET /addCustomers');
+		console.log ('In main');
 		var customerID = req.params.customerID;
 		mealRequirementCategory.findAll({include:[mealRequirement]})
 			.then(function(mrcats){
