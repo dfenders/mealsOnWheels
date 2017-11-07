@@ -150,6 +150,7 @@
 	//pass the customer array to the save function to input into the database 
     if(customerID)
     {
+        console.log("in ifCustomerId");
         customerObject['id'] = customerID;
         editCustomer(customerObject, userObject);
     }

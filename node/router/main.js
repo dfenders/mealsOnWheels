@@ -139,6 +139,7 @@ module.exports = function(app, socket)
 	});		// end app.get callback
 		
 app.post('/editCustomers', function (req, res){
+		console.log("hello----------------------------------------------");
 		console.log(req.body);
 		console.log ('POST /editCustomers');
 
@@ -148,6 +149,11 @@ app.post('/editCustomers', function (req, res){
 		console.log(c);
 		// User ID variable
 		var uID = user.id;
+
+		user.update(req.body.user).then(function(user){
+			c.user = user.id;
+			customer.update(c);
+		}, {where: {uID: user.id }})
 
 	});		// end app.get callback
 
